@@ -2,7 +2,6 @@ package com.example.singlefork.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,15 +15,9 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,9 +34,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.singlefork.R
-import com.example.singlefork.domain.model.Recipe
 import com.example.singlefork.ui.RecipeViewModel
 import com.example.singlefork.ui.navigation.RecipeScreens
+import com.example.singlefork.ui.screens.common.CustomRecipe
+import com.example.singlefork.ui.screens.common.SearchRecipe
 
 @Composable
 fun HomeScreen(viewModel: RecipeViewModel, navHostController: NavHostController) {
@@ -60,27 +54,20 @@ fun HomeScreen(viewModel: RecipeViewModel, navHostController: NavHostController)
                     Row(
                         modifier = Modifier.fillMaxWidth(0.3f), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(modifier = Modifier.clickable { navHostController.navigate(
-                            RecipeScreens.HOMESCREEN.name) }, imageVector = Icons.Default.Home, contentDescription = null)
+                        Icon(modifier = Modifier.clickable { navHostController.navigate(RecipeScreens.HOMESCREEN.name) }, painter = painterResource(R.drawable.home_24px), contentDescription = "Home")
                         Text(text = "Home")
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.9f),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier.fillMaxWidth(0.9f), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(modifier = Modifier.clickable { navHostController.navigate(
-                            RecipeScreens.SEARCHSCREEN.name) }, imageVector = Icons.Default.Search, contentDescription = null)
-                        Icon(modifier = Modifier.clickable { navHostController.navigate(
-                            RecipeScreens.HOMESCREEN.name) }, imageVector = Icons.Default.Add, contentDescription = null)
-                        Icon(modifier = Modifier.clickable { navHostController.navigate(
-                            RecipeScreens.TODAYSCREEN.name) }, imageVector = Icons.Default.Menu, contentDescription = null)
+                        Icon(modifier = Modifier.clickable { navHostController.navigate(RecipeScreens.SEARCHSCREEN.name) }, painter = painterResource(R.drawable.search_24px), contentDescription = "Search Screen")
+                        Icon(modifier = Modifier.clickable { navHostController.navigate(RecipeScreens.CATEGORYSCREEN.name) }, painter = painterResource(id = R.drawable.restaurant_menu_24px), contentDescription = "Category")
+                        Icon(modifier = Modifier.clickable { navHostController.navigate(RecipeScreens.TODAYSCREEN.name) }, painter = painterResource(id = R.drawable.calendar_today_24px), contentDescription = "Today's Dish")
                     }
                 }
             }
         }
     ) { paddingValues ->
-        Text(modifier = Modifier.padding(paddingValues), text = ".", color = Color.Transparent)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -94,14 +81,15 @@ fun HomeScreen(viewModel: RecipeViewModel, navHostController: NavHostController)
             Spacer(modifier = Modifier.height(5.dp))
             SearchRecipe(text = searchedRecipe, searchedRecipe = {searchedRecipe = it}, placeholder = "Type ingredients")
             WhatsInYourFridge()
-            BreakFastRecipe(recipeList)
+            CustomRecipe(recipeList = recipeList, mealType = "Breakfast")
             Spacer(modifier = Modifier.height(8.dp))
-            LunchRecipe(recipeList)
+            CustomRecipe(recipeList = recipeList, mealType = "Lunch")
             Spacer(modifier = Modifier.height(8.dp))
-            DinerRecipe(recipeList)
+            CustomRecipe(recipeList = recipeList, mealType = "Dinner")
             Spacer(modifier = Modifier.height(90.dp))
             Text(text = ".")
         }
+        Text(modifier = Modifier.padding(paddingValues), text = ".", color = Color.Transparent)
     }
 }
 
@@ -123,83 +111,4 @@ fun HelloChef() {
     }
 }
 
-@Composable
-fun BreakFastRecipe(recipeList: List<Recipe>) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
-        ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Recipes for breakfast")
-                Text(text = "see all")
-            }
-            Spacer(modifier = Modifier.height(5.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-            ) {
-                BreakfastRecipeCard(recipeList)
-            }
-        }
-    }
-}
 
-@Composable
-fun LunchRecipe(recipeList: List<Recipe>) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Recipes for lunch")
-                Text(text = "see all")
-            }
-            Spacer(modifier = Modifier.height(5.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
-            ) {
-                LunchRecipeCard(recipeList)
-            }
-        }
-    }
-}
-
-@Composable
-fun DinerRecipe(recipeList: List<Recipe>) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Recipes for dinner")
-                Text(text = "see all")
-            }
-            Spacer(modifier = Modifier.height(5.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState())
-            ) {
-                DinnerRecipeCard(recipeList)
-            }
-        }
-    }
-}

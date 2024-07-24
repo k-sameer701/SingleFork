@@ -6,10 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.singlefork.ui.RecipeViewModel
-import com.example.singlefork.ui.screens.CategoryScreen
+import com.example.singlefork.ui.screens.category.CategoryScreen
 import com.example.singlefork.ui.screens.home.HomeScreen
-import com.example.singlefork.ui.screens.SearchScreen
-import com.example.singlefork.ui.screens.TodayRecipeScreen
+import com.example.singlefork.ui.screens.search.SearchScreen
+import com.example.singlefork.ui.screens.nextMeal.TodayRecipeScreen
 
 @Composable
 fun ComposeNavigation() {
@@ -19,20 +19,12 @@ fun ComposeNavigation() {
         composable(route = RecipeScreens.HOMESCREEN.name) {
             HomeScreen(viewModel = viewModel, navHostController = navController)
         }
-//
-//        composable(route = RecipeScreens.DETAILSCREEN.name) {
-//
-//            DetailScreen(navHostController = navController, currentRecipe = recipeId)
-//        }
-
         composable(route = RecipeScreens.SEARCHSCREEN.name) {
             SearchScreen(viewModel = viewModel, navHostController = navController)
         }
-
         composable(route = RecipeScreens.TODAYSCREEN.name) {
             TodayRecipeScreen(viewModel = viewModel, navHostController = navController)
         }
-
         composable(route = RecipeScreens.CATEGORYSCREEN.name) {
             CategoryScreen(viewModel = viewModel, navHostController = navController)
         }
