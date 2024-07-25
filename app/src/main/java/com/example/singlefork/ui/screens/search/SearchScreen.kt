@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
@@ -32,14 +34,15 @@ import com.example.singlefork.R
 import com.example.singlefork.ui.RecipeViewModel
 import com.example.singlefork.ui.navigation.RecipeScreens
 import com.example.singlefork.ui.screens.common.SearchRecipe
-import com.example.singlefork.ui.screens.home.HelloChef
 
 @Composable
 fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostController) {
     var searchedRecipe by remember { mutableStateOf("") }
     val recipeList = viewModel.recipes.collectAsState().value
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 8.dp),
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
@@ -52,26 +55,21 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier
+                            .fillMaxWidth(0.3f)
+                            .clickable {
+                                navHostController.navigate(RecipeScreens.HOMESCREEN.name) {
+                                    popUpTo(0)
+                                }
+                            },
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.HOMESCREEN.name
-                                )
-                            },
                             painter = painterResource(R.drawable.home_24px),
                             contentDescription = "Home"
                         )
-                        Text(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.HOMESCREEN.name
-                                )
-                            }, text = "Home"
-                        )
+                        Text(text = "Home")
                     }
                     Row(
                         modifier = Modifier.fillMaxWidth(0.9f),
@@ -82,7 +80,7 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.SEARCHSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(R.drawable.search_24px),
                             contentDescription = "Search Screen"
@@ -91,7 +89,7 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.CATEGORYSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(id = R.drawable.restaurant_menu_24px),
                             contentDescription = "Category"
@@ -115,29 +113,21 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
                 .fillMaxSize()
                 .padding(5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
-            Row(
+            ChefSearch()
+            Spacer(modifier = Modifier.height(5.dp))
+            SearchRecipe(
+                text = searchedRecipe,
+                searchedRecipe = { searchedRecipe = it },
+                placeholder = "Type ingredients"
+            )
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(5.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Top
+                    .verticalScroll(rememberScrollState())
             ) {
-                HelloChef()
-                Spacer(modifier = Modifier.height(5.dp))
-                SearchRecipe(
-                    text = searchedRecipe,
-                    searchedRecipe = { searchedRecipe = it },
-                    placeholder = "Type ingredients"
-                )
-            }
-            Column {
-                recipeList.forEach { currentRecipe ->
-                    if (currentRecipe.mealType.contains(searchedRecipe)) {
-
-                    }
-                }
+                DisplayCustomRecipeCard(recipeList, searchedRecipe)
             }
         }
         Text(

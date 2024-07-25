@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -42,37 +43,46 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.singlefork.R
 import com.example.singlefork.domain.model.Recipe
-import com.example.singlefork.ui.screens.detail.HorizontalPagerTestScreen
-import com.example.singlefork.ui.screens.detail.RecipeDetailChip
 
 @Composable
-fun CustomRecipe(recipeList: List<Recipe>, mealType: String) {
+fun CustomRecipe(recipeList: List<Recipe>, mealType: String, category: String) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Recipes for $mealType")
-                Text(text = "see all")
+                Text(
+                    text = category,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(text = "see all", style = MaterialTheme.typography.labelSmall)
             }
             Spacer(modifier = Modifier.height(5.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
             ) {
                 CustomRecipeCard(recipeList, mealType)
             }
@@ -86,46 +96,91 @@ fun CustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
     var currentId by remember { mutableIntStateOf(0) }
     recipeList.forEach { currentRecipe ->
         if (currentRecipe.mealType.contains(mealType)) {
-            val imageState = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current).data(currentRecipe.image).size(
-                Size.ORIGINAL).build()).state
+            val imageState = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current).data(currentRecipe.image).size(
+                    Size.ORIGINAL
+                ).build()
+            ).state
             Card(
-                modifier = Modifier.height(400.dp).width(270.dp).padding(5.dp)
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .width(270.dp)
+                    .padding(5.dp)
                     .clickable {
                         currentId = currentRecipe.id
                         displayRecipeDetail = true
                     },
             ) {
                 if (imageState is AsyncImagePainter.State.Success) {
-                    Image(modifier = Modifier.width(270.dp).height(270.dp).padding(bottom = 5.dp)
-                        .clickable { displayRecipeDetail = true
-                            currentId = currentRecipe.id }, painter = imageState.painter, contentDescription = null, contentScale = ContentScale.Crop)
+                    Image(
+                        modifier = Modifier
+                            .width(270.dp)
+                            .height(270.dp)
+                            .padding(bottom = 5.dp)
+                            .clickable {
+                                displayRecipeDetail = true
+                                currentId = currentRecipe.id
+                            },
+                        painter = imageState.painter,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
                 }
                 Column(
-                    modifier = Modifier.padding(5.dp).height(130.dp).clickable { displayRecipeDetail = true
-                        currentId = currentRecipe.id}
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .wrapContentHeight()
+                        .clickable {
+                            displayRecipeDetail = true
+                            currentId = currentRecipe.id
+                        }
                 ) {
                     Spacer(modifier = Modifier.height(1.dp))
-                    Text(text = currentRecipe.name, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-                    Text(text = currentRecipe.prepTimeMinutes.toString(), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-                    Text(text = currentRecipe.difficulty, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = currentRecipe.name,
+                        style = MaterialTheme.typography.labelMedium,
+                        maxLines = 1
+                    )
+                    Spacer(modifier = Modifier.height(3.dp))
+                    Row {
+                        Icon(
+                            painter = painterResource(id = R.drawable.schedule_24px),
+                            contentDescription = "Time"
+                        )
+                        Spacer(modifier = Modifier.width(3.dp))
+                        Text(
+                            text = "${currentRecipe.prepTimeMinutes} Minutes",
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
                 }
                 if (displayRecipeDetail && currentRecipe.id == currentId) {
                     AlertDialog(
-                        modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(5.dp),
-                        onDismissRequest = {  },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .padding(5.dp),
+                        onDismissRequest = { displayRecipeDetail = !displayRecipeDetail },
                         confirmButton = {
                             Scaffold(
                                 modifier = Modifier.fillMaxSize(),
                                 topBar = {
                                     Card(
-                                        modifier = Modifier.padding(5.dp).size(30.dp).clip(
-                                            RoundedCornerShape(8.dp)
-                                        )
+                                        modifier = Modifier
+                                            .padding(5.dp)
+                                            .size(30.dp)
+                                            .clip(
+                                                RoundedCornerShape(8.dp)
+                                            )
                                             .clickable {
                                                 displayRecipeDetail = false
                                             }, elevation = CardDefaults.cardElevation(8.dp)
                                     ) {
-                                        Icon(modifier = Modifier.fillMaxSize(), imageVector = Icons.Default.Clear, contentDescription = null)
+                                        Icon(
+                                            modifier = Modifier.fillMaxSize(),
+                                            imageVector = Icons.Default.Clear,
+                                            contentDescription = null
+                                        )
                                     }
                                 },
                             ) { paddingValues ->
@@ -134,41 +189,76 @@ fun CustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                 ) {
                                     if (imageState is AsyncImagePainter.State.Success) {
                                         Image(
-                                            modifier = Modifier.width(270.dp).height(270.dp).padding(bottom = 5.dp).clickable { displayRecipeDetail = true }.clip(
-                                                RoundedCornerShape(8.dp)
-                                            ), alignment = Alignment.TopStart, painter = imageState.painter, contentDescription = null, contentScale = ContentScale.Crop)
+                                            modifier = Modifier
+                                                .width(270.dp)
+                                                .height(270.dp)
+                                                .padding(bottom = 5.dp)
+                                                .clickable { displayRecipeDetail = true }
+                                                .clip(
+                                                    RoundedCornerShape(8.dp)
+                                                ),
+                                            alignment = Alignment.TopStart,
+                                            painter = imageState.painter,
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop
+                                        )
                                     }
                                     Column(
-                                        modifier = Modifier.fillMaxSize().verticalScroll(
-                                            rememberScrollState()
-                                        ),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .verticalScroll(
+                                                rememberScrollState()
+                                            ),
                                         verticalArrangement = Arrangement.Top,
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(text = currentRecipe.name)
+                                        Text(
+                                            text = currentRecipe.name,
+                                            style = MaterialTheme.typography.headlineMedium,
+                                        )
                                         Column(
-                                            modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center
+                                            modifier = Modifier.fillMaxSize(),
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            verticalArrangement = Arrangement.Center
                                         ) {
                                             Row(
-                                                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                RecipeDetailChip("${currentRecipe.caloriesPerServing} Calories", R.drawable.local_fire_department_24px)
+                                                RecipeDetailChip(
+                                                    "${currentRecipe.caloriesPerServing} Calories",
+                                                    R.drawable.local_fire_department_24px
+                                                )
                                                 Spacer(modifier = Modifier.width(5.dp))
-                                                RecipeDetailChip("${currentRecipe.rating} Ratings", R.drawable.star_24px)
+                                                RecipeDetailChip(
+                                                    "${currentRecipe.rating}",
+                                                    R.drawable.star_24px
+                                                )
                                             }
                                             Row(
-                                                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                RecipeDetailChip("${currentRecipe.servings} Servings", R.drawable.local_dining_24px)
+                                                RecipeDetailChip(
+                                                    "${currentRecipe.servings} Servings",
+                                                    R.drawable.local_dining_24px
+                                                )
                                                 Spacer(modifier = Modifier.width(5.dp))
-                                                RecipeDetailChip("${currentRecipe.cookTimeMinutes} Minutes", R.drawable.schedule_24px)
+                                                RecipeDetailChip(
+                                                    " ${currentRecipe.cookTimeMinutes}",
+                                                    R.drawable.schedule_24px
+                                                )
                                             }
                                         }
                                         HorizontalPagerTestScreen(currentRecipe)
                                     }
-
                                 }
-                                Text(modifier = Modifier.padding(paddingValues), text = ".", color = Color.Transparent
+                                Text(
+                                    modifier = Modifier.padding(paddingValues),
+                                    text = ".",
+                                    color = Color.Transparent
                                 )
                             }
                         }
@@ -190,19 +280,19 @@ fun SearchRecipe(text: String, searchedRecipe: (String) -> Unit, placeholder: St
         TextField(
             modifier = Modifier
                 .fillMaxWidth(),
-//            textStyle = MaterialTheme.typography.headlineSmall,
+            textStyle = MaterialTheme.typography.labelLarge,
             value = text,
             onValueChange = searchedRecipe,
             colors = TextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
+//                unfocusedContainerColor = Color.Transparent,
+//                focusedContainerColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),
             singleLine = true,
-            maxLines = 1  ,
+            maxLines = 1,
             placeholder = { Text(text = placeholder) },
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done

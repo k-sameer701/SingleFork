@@ -11,7 +11,7 @@ interface AppContainer {
     val recipeRepository: RecipeRepository
 }
 
-class DefaultAppContainer: AppContainer {
+class DefaultAppContainer : AppContainer {
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(Constants.BASE_URL)

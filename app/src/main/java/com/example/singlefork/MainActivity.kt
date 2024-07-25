@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             SingleForkTheme {
                 Surface {
@@ -33,11 +32,16 @@ class MainActivity : ComponentActivity() {
 
                     LaunchedEffect(key1 = viewModel.showErrorToast) {
                         viewModel.showErrorToast.collectLatest { show ->
-                            if(show) { Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show() }
+                            if (show) {
+                                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                     if (recipeList.isEmpty()) {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator()
                         }
                     } else {

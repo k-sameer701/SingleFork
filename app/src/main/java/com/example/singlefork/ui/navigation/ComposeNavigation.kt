@@ -8,8 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.singlefork.ui.RecipeViewModel
 import com.example.singlefork.ui.screens.category.CategoryScreen
 import com.example.singlefork.ui.screens.home.HomeScreen
-import com.example.singlefork.ui.screens.search.SearchScreen
 import com.example.singlefork.ui.screens.nextMeal.TodayRecipeScreen
+import com.example.singlefork.ui.screens.search.SearchScreen
 
 @Composable
 fun ComposeNavigation() {

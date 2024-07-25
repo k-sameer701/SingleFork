@@ -3,18 +3,22 @@ package com.example.singlefork.ui.screens.home
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,7 +33,7 @@ fun WhatsInYourFridge() {
             .padding(5.dp)
     ) {
         Column {
-            Text(text = "What's in Your Fridge?", fontWeight = FontWeight.SemiBold)
+            Text(text = "What's in Your Fridge?", style = MaterialTheme.typography.bodyMedium)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -76,9 +80,46 @@ fun WhatsInYourFridge() {
 fun CustomChip(label: String, imageIcon: Int) {
     AssistChip(
         onClick = { Log.d("Assist chip", "hello world") },
-        label = { Text(text = label) },
+        label = { Text(text = label, style = MaterialTheme.typography.labelMedium) },
         leadingIcon = {
-            Image(modifier = Modifier.size(10.dp), painter = painterResource(id = imageIcon), contentDescription = label)
+            Image(
+                modifier = Modifier.size(15.dp),
+                painter = painterResource(id = imageIcon),
+                contentDescription = label
+            )
         }
     )
+}
+
+@Composable
+fun HelloChef() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(0.7f)
+        ) {
+            Text(
+                text = "Hello, Chef",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = "What do you want to cook today?",
+                maxLines = 2,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        Image(
+            modifier = Modifier.size(70.dp),
+            painter = painterResource(id = R.drawable.cooking),
+            contentDescription = null
+        )
+    }
 }

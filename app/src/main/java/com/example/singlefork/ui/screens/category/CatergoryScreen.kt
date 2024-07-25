@@ -1,5 +1,6 @@
 package com.example.singlefork.ui.screens.category
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,11 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,19 +27,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.singlefork.R
 import com.example.singlefork.ui.RecipeViewModel
 import com.example.singlefork.ui.navigation.RecipeScreens
 import com.example.singlefork.ui.screens.common.CustomRecipe
-import com.example.singlefork.ui.screens.home.HelloChef
 
 @Composable
 fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostController) {
     val recipeList = viewModel.recipes.collectAsState().value
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 8.dp),
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
@@ -49,16 +54,17 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier
+                            .fillMaxWidth(0.3f)
+                            .clickable {
+                                navHostController.navigate(
+                                    RecipeScreens.HOMESCREEN.name
+                                ) { popUpTo(0) }
+                            },
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.HOMESCREEN.name
-                                )
-                            },
                             painter = painterResource(R.drawable.home_24px),
                             contentDescription = "Home"
                         )
@@ -73,7 +79,7 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.SEARCHSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(R.drawable.search_24px),
                             contentDescription = "Search Screen"
@@ -82,7 +88,7 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.CATEGORYSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(id = R.drawable.restaurant_menu_24px),
                             contentDescription = "Category"
@@ -91,7 +97,7 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.TODAYSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(id = R.drawable.calendar_today_24px),
                             contentDescription = "Today's Dish"
@@ -101,7 +107,6 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
             }
         }
     ) { paddingValues ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -110,23 +115,59 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            HelloChef()
-            CustomRecipe(recipeList = recipeList, mealType = "Breakfast")
+            ChefCategory()
+            CustomRecipe(recipeList = recipeList, mealType = "Breakfast", category = "Trending Now")
             Spacer(modifier = Modifier.height(8.dp))
-            CustomRecipe(recipeList = recipeList, mealType = "Lunch")
+            CustomRecipe(recipeList = recipeList, mealType = "Lunch", category = "Popular Cuisine")
             Spacer(modifier = Modifier.height(8.dp))
-            CustomRecipe(recipeList = recipeList, mealType = "Dinner")
+            CustomRecipe(recipeList = recipeList, mealType = "Dinner", category = "Healthy Pick")
             Spacer(modifier = Modifier.height(8.dp))
-            CustomRecipe(recipeList = recipeList, mealType = "Snacks")
+            CustomRecipe(recipeList = recipeList, mealType = "Snacks", category = "Quick and Easy")
             Spacer(modifier = Modifier.height(8.dp))
-            CustomRecipe(recipeList = recipeList, mealType = "Beverage")
+            CustomRecipe(
+                recipeList = recipeList,
+                mealType = "Beverage",
+                category = "Light and Healthy"
+            )
             Spacer(modifier = Modifier.height(8.dp))
-            CustomRecipe(recipeList = recipeList, mealType = "Dessert")
+            CustomRecipe(
+                recipeList = recipeList,
+                mealType = "Dessert",
+                category = "Desserts and Treats"
+            )
             Spacer(modifier = Modifier.height(90.dp))
             Text(text = ".")
         }
         Text(
             modifier = Modifier.padding(paddingValues), text = ".", color = Color.Transparent
+        )
+    }
+}
+
+@Composable
+fun ChefCategory() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(0.7f)
+        ) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = "Cook Something New Today",
+                maxLines = 2,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        Image(
+            modifier = Modifier.size(40.dp),
+            painter = painterResource(id = R.drawable.spaguetti),
+            contentDescription = null
         )
     }
 }

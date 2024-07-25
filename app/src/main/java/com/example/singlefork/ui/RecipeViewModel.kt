@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class RecipeViewModel(
     private val recipeRepository: RecipeRepository
-): ViewModel() {
+) : ViewModel() {
     private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
     val recipes = _recipes
 
@@ -30,10 +30,11 @@ class RecipeViewModel(
 
     private fun getRecipes() = viewModelScope.launch {
         recipeRepository.getAllRecipes().collectLatest { result ->
-            when(result) {
+            when (result) {
                 is Resource.Error -> {
                     _showErrorToast.value = true
                 }
+
                 is Resource.Success -> {
                     result.data?.let { recipe ->
                         _recipes.update { recipe }
@@ -43,7 +44,7 @@ class RecipeViewModel(
         }
     }
 
-    companion object{
+    companion object {
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as RecipeApplication)

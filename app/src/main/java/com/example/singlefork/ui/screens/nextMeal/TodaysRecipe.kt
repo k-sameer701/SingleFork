@@ -37,15 +37,17 @@ import coil.size.Size
 import com.example.singlefork.R
 import com.example.singlefork.ui.RecipeViewModel
 import com.example.singlefork.ui.navigation.RecipeScreens
-import com.example.singlefork.ui.screens.detail.HorizontalPagerTestScreen
-import com.example.singlefork.ui.screens.detail.RecipeDetailChip
+import com.example.singlefork.ui.screens.common.HorizontalPagerTestScreen
+import com.example.singlefork.ui.screens.common.RecipeDetailChip
 
 @Composable
 fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostController) {
     val randomId = (0..30).random()
     val todayRecipe = viewModel.recipes.collectAsState().value[randomId]
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 10.dp),
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
@@ -58,16 +60,17 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.3f),
+                        modifier = Modifier
+                            .fillMaxWidth(0.3f)
+                            .clickable {
+                                navHostController.navigate(RecipeScreens.HOMESCREEN.name) {
+                                    popUpTo(0)
+                                }
+                            },
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.HOMESCREEN.name
-                                )
-                            },
                             painter = painterResource(R.drawable.home_24px),
                             contentDescription = "Home"
                         )
@@ -82,7 +85,7 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.SEARCHSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(R.drawable.search_24px),
                             contentDescription = "Search Screen"
@@ -91,7 +94,7 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.CATEGORYSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(id = R.drawable.restaurant_menu_24px),
                             contentDescription = "Category"
@@ -100,7 +103,7 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                             modifier = Modifier.clickable {
                                 navHostController.navigate(
                                     RecipeScreens.TODAYSCREEN.name
-                                )
+                                ) { popUpTo(0) }
                             },
                             painter = painterResource(id = R.drawable.calendar_today_24px),
                             contentDescription = "Today's Dish"
@@ -118,6 +121,15 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "Today's Spotlight")
+            }
+            Spacer(modifier = Modifier.width(8.dp))
             if (imageState is AsyncImagePainter.State.Success) {
                 Image(
                     modifier = Modifier
@@ -168,12 +180,14 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                         )
                         Spacer(modifier = Modifier.width(5.dp))
                         RecipeDetailChip(
-                            "${todayRecipe.cookTimeMinutes} Minutes",
+                            "${todayRecipe.prepTimeMinutes} Minutes",
                             R.drawable.schedule_24px
                         )
                     }
                 }
                 HorizontalPagerTestScreen(todayRecipe)
+                Spacer(modifier = Modifier.height(50.dp))
+                Text(text = ".", color = Color.Transparent)
             }
         }
         Text(

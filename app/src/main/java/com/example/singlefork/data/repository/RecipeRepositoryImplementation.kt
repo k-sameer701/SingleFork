@@ -11,9 +11,9 @@ import java.io.IOException
 
 class RecipeRepositoryImplementation(
     private val apiService: RecipeApi
-): RecipeRepository {
+) : RecipeRepository {
     override suspend fun getAllRecipes(): Flow<Resource<List<Recipe>>> {
-        return flow{
+        return flow {
             val recipeFromApi = try {
                 apiService.getAllRecipes()
             } catch (e: IOException) {
