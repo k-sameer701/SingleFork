@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/k-sameer701/SwiftScribe/blob/master/Screenshot/app_icon_preview.png" width="145" height="145" style="display: block; margin: 0 auto"/>
+    <img src="https://github.com/k-sameer701/SingleFork/blob/master/Screenshots/SingleFork.png" width="145" height="145" style="display: block; margin: 0 auto"/>
     <h1>Single Fork</h1>
     <h3>Single Fork is a versatile Android app for discovering new meals. It suggests a new meal each time you open the app, eliminating the need to plan your next meal. Explore a variety of cuisines, including instructions, ingredients, ratings, cook time, and more.</h3>
 </div>
@@ -27,8 +27,8 @@
 ## Screenshots
 
 <div align="center">
-    <img height="600px" src="https://github.com/k-sameer701/SwiftScribe/blob/master/Screenshot/Dark.png" />
-    <img height="600px" src="https://github.com/k-sameer701/SwiftScribe/blob/master/Screenshot/Light.png" />
+    <img height="600px" src="https://github.com/k-sameer701/SingleFork/blob/master/Screenshots/DarkTheme.png" />
+    <img height="600px" src="https://github.com/k-sameer701/SingleFork/blob/master/Screenshots/LightTheme.png" />
 </div>
 
 ## Installation
