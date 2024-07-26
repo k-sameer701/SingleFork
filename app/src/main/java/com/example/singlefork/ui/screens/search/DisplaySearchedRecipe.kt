@@ -1,6 +1,7 @@
 package com.example.singlefork.ui.screens.search
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -67,7 +69,9 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -86,14 +90,21 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                         currentId = currentRecipe.id
                         displayRecipeDetail = true
                     },
-
-                ) {
+                colors = CardColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground,
+                    disabledContainerColor = MaterialTheme.colorScheme.background,
+                    disabledContentColor = MaterialTheme.colorScheme.onBackground
+                ),
+                elevation = CardDefaults.cardElevation(5.dp)
+            ) {
                 if (imageState is AsyncImagePainter.State.Success) {
                     Image(
                         modifier = Modifier
                             .width(270.dp)
                             .height(270.dp)
                             .padding(bottom = 5.dp)
+                            .background(MaterialTheme.colorScheme.background)
                             .clickable {
                                 displayRecipeDetail = true
                                 currentId = currentRecipe.id
@@ -106,27 +117,38 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                 Column(
                     modifier = Modifier
                         .wrapContentHeight()
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(5.dp)
                         .clickable {
                             displayRecipeDetail = true
                             currentId = currentRecipe.id
                         }
                 ) {
-                    Spacer(modifier = Modifier.height(1.dp))
+                    Spacer(modifier = Modifier
+                        .height(1.dp)
+                        .background(MaterialTheme.colorScheme.background))
                     Text(
+                        modifier = Modifier.background(MaterialTheme.colorScheme.background),
                         text = currentRecipe.name,
                         maxLines = 1,
                         style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     Row {
                         Icon(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.background),
                             painter = painterResource(id = R.drawable.schedule_24px),
-                            contentDescription = "Time"
+                            contentDescription = "Time",
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
-                        Spacer(modifier = Modifier.width(3.dp))
+                        Spacer(modifier = Modifier
+                            .width(3.dp)
+                            .background(MaterialTheme.colorScheme.background))
                         Text(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.background),
                             text = "${currentRecipe.prepTimeMinutes} Minutes",
-                            style = MaterialTheme.typography.labelMedium
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
@@ -137,6 +159,8 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                             .fillMaxHeight()
                             .padding(5.dp),
                         onDismissRequest = { displayRecipeDetail = !displayRecipeDetail },
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = RoundedCornerShape(8.dp),
                         confirmButton = {
                             Scaffold(
                                 modifier = Modifier.fillMaxSize(),
@@ -150,7 +174,8 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                             )
                                             .clickable {
                                                 displayRecipeDetail = false
-                                            }, elevation = CardDefaults.cardElevation(8.dp)
+                                            },
+//                                        elevation = CardDefaults.cardElevation(8.dp)
                                     ) {
                                         Icon(
                                             modifier = Modifier.fillMaxSize(),
@@ -161,7 +186,7 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                 },
                             ) { paddingValues ->
                                 Column(
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerHighest)
                                 ) {
                                     if (imageState is AsyncImagePainter.State.Success) {
                                         Image(
@@ -182,18 +207,24 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .verticalScroll(rememberScrollState()),
+                                            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                                            .verticalScroll(
+                                                rememberScrollState()
+                                            ),
                                         verticalArrangement = Arrangement.Top,
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(text = currentRecipe.name)
+                                        Text(
+                                            text = currentRecipe.name,
+                                            style = MaterialTheme.typography.headlineMedium,
+                                        )
                                         Column(
-                                            modifier = Modifier.fillMaxSize(),
+                                            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainerHighest),
                                             horizontalAlignment = Alignment.CenterHorizontally,
                                             verticalArrangement = Arrangement.Center
                                         ) {
                                             Row(
-                                                modifier = Modifier.fillMaxWidth(),
+                                                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceContainerHighest),
                                                 horizontalArrangement = Arrangement.SpaceBetween,
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
@@ -201,14 +232,14 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                                     "${currentRecipe.caloriesPerServing} Calories",
                                                     R.drawable.local_fire_department_24px
                                                 )
-                                                Spacer(modifier = Modifier.width(5.dp))
+                                                Spacer(modifier = Modifier.width(5.dp).background(MaterialTheme.colorScheme.surfaceContainerHighest))
                                                 RecipeDetailChip(
                                                     "${currentRecipe.rating}",
                                                     R.drawable.star_24px
                                                 )
                                             }
                                             Row(
-                                                modifier = Modifier.fillMaxWidth(),
+                                                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surfaceContainerHighest),
                                                 horizontalArrangement = Arrangement.SpaceBetween,
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
@@ -216,7 +247,7 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                                     "${currentRecipe.servings} Servings",
                                                     R.drawable.local_dining_24px
                                                 )
-                                                Spacer(modifier = Modifier.width(5.dp))
+                                                Spacer(modifier = Modifier.width(5.dp).background(MaterialTheme.colorScheme.surfaceContainerHighest))
                                                 RecipeDetailChip(
                                                     " ${currentRecipe.cookTimeMinutes}",
                                                     R.drawable.schedule_24px
@@ -232,15 +263,13 @@ fun DisplayCustomRecipeCard(recipeList: List<Recipe>, mealType: String) {
                                     color = Color.Transparent
                                 )
                             }
-                        }
+                        },
                     )
                 }
             }
         }
     }
-
     Spacer(modifier = Modifier.width(5.dp))
-
 }
 
 @Composable
@@ -248,23 +277,32 @@ fun ChefSearch() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(5.dp)
+            .background(MaterialTheme.colorScheme.surface),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(0.7f)
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier
+                .height(2.dp)
+                .background(MaterialTheme.colorScheme.surface))
             Text(
+                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                 text = "Discover New Flavors",
                 maxLines = 2,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
         Image(
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier
+                .size(40.dp)
+                .background(MaterialTheme.colorScheme.surface),
             painter = painterResource(id = R.drawable.cocktail),
             contentDescription = null
         )

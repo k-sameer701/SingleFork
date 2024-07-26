@@ -1,6 +1,7 @@
 package com.example.singlefork.ui.screens.category
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,68 +40,89 @@ import com.example.singlefork.ui.screens.common.CustomRecipe
 fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostController) {
     val recipeList = viewModel.recipes.collectAsState().value
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 8.dp),
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
                     .wrapContentHeight()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp)),
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
                         modifier = Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
                             .fillMaxWidth(0.3f)
                             .clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.HOMESCREEN.name
-                                ) { popUpTo(0) }
+                                navHostController.navigate(RecipeScreens.HOMESCREEN.name) {
+                                    popUpTo(0)
+                                }
                             },
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
                             painter = painterResource(R.drawable.home_24px),
-                            contentDescription = "Home"
+                            contentDescription = "Home",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
-                        Text(text = "Home")
+                        Text(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
+                            text = "Home",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.9f),
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
+                            .fillMaxWidth(0.9f),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.SEARCHSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.SEARCHSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(R.drawable.search_24px),
-                            contentDescription = "Search Screen"
+                            contentDescription = "Search Screen",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.CATEGORYSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.CATEGORYSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(id = R.drawable.restaurant_menu_24px),
-                            contentDescription = "Category"
+                            contentDescription = "Category",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.TODAYSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.TODAYSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(id = R.drawable.calendar_today_24px),
-                            contentDescription = "Today's Dish"
+                            contentDescription = "Today's Dish",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
@@ -109,8 +131,9 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
     ) { paddingValues ->
         Column(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
-                .padding(5.dp)
+                .padding(top = 18.dp, bottom = 5.dp, start = 5.dp, end = 5.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -129,13 +152,21 @@ fun CategoryScreen(viewModel: RecipeViewModel, navHostController: NavHostControl
                 mealType = "Beverage",
                 category = "Light and Healthy"
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(
+                modifier = Modifier
+                    .height(8.dp)
+                    .background(MaterialTheme.colorScheme.background)
+            )
             CustomRecipe(
                 recipeList = recipeList,
                 mealType = "Dessert",
                 category = "Desserts and Treats"
             )
-            Spacer(modifier = Modifier.height(90.dp))
+            Spacer(
+                modifier = Modifier
+                    .height(90.dp)
+                    .background(MaterialTheme.colorScheme.background)
+            )
             Text(text = ".")
         }
         Text(
@@ -149,23 +180,32 @@ fun ChefCategory() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(5.dp)
+            .background(MaterialTheme.colorScheme.background),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(0.7f)
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .background(MaterialTheme.colorScheme.background)
         ) {
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(
+                modifier = Modifier
+                    .height(2.dp)
+                    .background(MaterialTheme.colorScheme.background)
+            )
             Text(
                 text = "Cook Something New Today",
                 maxLines = 2,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
         }
         Image(
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier
+                .size(40.dp)
+                .background(MaterialTheme.colorScheme.background),
             painter = painterResource(id = R.drawable.spaguetti),
             contentDescription = null
         )

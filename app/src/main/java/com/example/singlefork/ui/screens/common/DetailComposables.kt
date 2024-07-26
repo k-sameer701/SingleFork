@@ -1,5 +1,6 @@
 package com.example.singlefork.ui.screens.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.singlefork.domain.model.Recipe
@@ -32,23 +32,38 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecipeDetailChip(recipeDetail: String, img: Int) {
     Surface(
-        modifier = Modifier
+        modifier = Modifier,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest
     ) {
         Row(
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .padding(4.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
+                modifier = Modifier,
                 shape = RoundedCornerShape(5.dp),
-                color = Color.LightGray
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                shadowElevation = 2.dp
             ) {
-                Icon(painter = painterResource(id = img), contentDescription = null)
+                Icon(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer),
+                    painter = painterResource(id = img),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer
+                )
             }
-            Spacer(modifier = Modifier.width(5.dp))
+            Spacer(
+                modifier = Modifier
+                    .width(5.dp)
+                    .background(MaterialTheme.colorScheme.tertiaryContainer)
+            )
             Text(
                 text = recipeDetail,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -95,13 +110,19 @@ fun HorizontalPagerTestScreen(currentRecipe: Recipe) {
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
     val scope = rememberCoroutineScope()
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .fillMaxSize()
     ) {
         HorizontalPager(
-            state = pagerState, modifier = Modifier.align(Alignment.Center)
+            state = pagerState,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .align(Alignment.Center)
         ) {
             Box(
                 modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                     .fillMaxWidth()
                     .wrapContentHeight(), contentAlignment = Alignment.Center
             ) {
@@ -116,6 +137,7 @@ fun HorizontalPagerTestScreen(currentRecipe: Recipe) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                 .align(Alignment.TopCenter),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -126,29 +148,39 @@ fun HorizontalPagerTestScreen(currentRecipe: Recipe) {
                         bottomStart = 10.dp,
                         topStart = 10.dp
                     )
-                )
+                ),
+                color = MaterialTheme.colorScheme.surfaceContainerHighest
             ) {
                 Row(
                     modifier = Modifier
                         .width(125.dp)
                         .height(45.dp)
-                        .padding(4.dp),
+                        .padding(4.dp)
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(
                         modifier = Modifier
                             .width(125.dp)
-                            .height(30.dp),
+                            .height(40.dp),
                         onClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) } },
-                        shape = RoundedCornerShape(5.dp)
+                        shape = RoundedCornerShape(5.dp),
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        shadowElevation = 4.dp
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.tertiaryContainer),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "Follow", style = MaterialTheme.typography.headlineSmall)
+                            Text(
+                                text = "Follow",
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
                         }
                     }
                 }
@@ -159,29 +191,39 @@ fun HorizontalPagerTestScreen(currentRecipe: Recipe) {
                         bottomEnd = 10.dp,
                         topEnd = 10.dp
                     )
-                )
+                ),
+                color = MaterialTheme.colorScheme.surfaceContainerHighest
             ) {
                 Row(
                     modifier = Modifier
                         .width(125.dp)
                         .height(45.dp)
-                        .padding(4.dp),
+                        .padding(4.dp)
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(
                         modifier = Modifier
                             .width(125.dp)
-                            .height(30.dp),
+                            .height(40.dp),
                         onClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) } },
-                        shape = RoundedCornerShape(5.dp)
+                        shape = RoundedCornerShape(5.dp),
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        shadowElevation = 4.dp
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.tertiaryContainer),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "Items", style = MaterialTheme.typography.headlineSmall)
+                            Text(
+                                text = "Items",
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package com.example.singlefork.ui.screens.nextMeal
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
@@ -45,22 +48,25 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
     val randomId = (0..30).random()
     val todayRecipe = viewModel.recipes.collectAsState().value[randomId]
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 10.dp),
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
                     .wrapContentHeight()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp)),
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
                         modifier = Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
                             .fillMaxWidth(0.3f)
                             .clickable {
                                 navHostController.navigate(RecipeScreens.HOMESCREEN.name) {
@@ -71,42 +77,60 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
                             painter = painterResource(R.drawable.home_24px),
-                            contentDescription = "Home"
+                            contentDescription = "Home",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
-                        Text(text = "Home")
+                        Text(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
+                            text = "Home",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.9f),
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
+                            .fillMaxWidth(0.9f),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.SEARCHSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.SEARCHSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(R.drawable.search_24px),
-                            contentDescription = "Search Screen"
+                            contentDescription = "Search Screen",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.CATEGORYSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.CATEGORYSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(id = R.drawable.restaurant_menu_24px),
-                            contentDescription = "Category"
+                            contentDescription = "Category",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.TODAYSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.TODAYSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(id = R.drawable.calendar_today_24px),
-                            contentDescription = "Today's Dish"
+                            contentDescription = "Today's Dish",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
@@ -119,20 +143,40 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
             ).build()
         ).state
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .padding(top = 20.dp, bottom = 5.dp, start = 5.dp, end = 5.dp)
         ) {
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(
+                modifier = Modifier
+                    .height(8.dp)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            )
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "Today's Spotlight")
+                Text(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                    text = "Today's Spotlight",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                    .height(8.dp)
+            )
             if (imageState is AsyncImagePainter.State.Success) {
                 Image(
                     modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                         .width(270.dp)
                         .height(270.dp)
                         .padding(bottom = 5.dp)
@@ -146,19 +190,30 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
             }
             Column(
                 modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = todayRecipe.name)
+                Text(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                    text = todayRecipe.name,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                        .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -166,11 +221,17 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                             "${todayRecipe.caloriesPerServing} Calories",
                             R.drawable.local_fire_department_24px
                         )
-                        Spacer(modifier = Modifier.width(5.dp))
+                        Spacer(
+                            modifier = Modifier
+                                .width(5.dp)
+                                .background(MaterialTheme.colorScheme.background)
+                        )
                         RecipeDetailChip("${todayRecipe.rating} Ratings", R.drawable.star_24px)
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -178,7 +239,11 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                             "${todayRecipe.servings} Servings",
                             R.drawable.local_dining_24px
                         )
-                        Spacer(modifier = Modifier.width(5.dp))
+                        Spacer(
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                                .width(5.dp)
+                        )
                         RecipeDetailChip(
                             "${todayRecipe.prepTimeMinutes} Minutes",
                             R.drawable.schedule_24px
@@ -186,7 +251,11 @@ fun TodayRecipeScreen(viewModel: RecipeViewModel, navHostController: NavHostCont
                     }
                 }
                 HorizontalPagerTestScreen(todayRecipe)
-                Spacer(modifier = Modifier.height(50.dp))
+                Spacer(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                        .height(50.dp)
+                )
                 Text(text = ".", color = Color.Transparent)
             }
         }

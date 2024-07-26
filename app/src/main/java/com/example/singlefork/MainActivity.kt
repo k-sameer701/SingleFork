@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,10 +24,13 @@ import kotlinx.coroutines.flow.collectLatest
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+        enableEdgeToEdge()
         setContent {
             SingleForkTheme {
-                Surface {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.surface
+                ) {
                     val viewModel: RecipeViewModel = viewModel(factory = RecipeViewModel.factory)
                     val recipeList = viewModel.recipes.collectAsState().value
                     val context = LocalContext.current

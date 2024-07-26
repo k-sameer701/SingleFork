@@ -1,5 +1,6 @@
 package com.example.singlefork.ui.screens.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,22 +42,25 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
     var searchedRecipe by remember { mutableStateOf("") }
     val recipeList = viewModel.recipes.collectAsState().value
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 8.dp),
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
                     .wrapContentHeight()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(10.dp)),
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
                         modifier = Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
                             .fillMaxWidth(0.3f)
                             .clickable {
                                 navHostController.navigate(RecipeScreens.HOMESCREEN.name) {
@@ -66,42 +71,60 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
                             painter = painterResource(R.drawable.home_24px),
-                            contentDescription = "Home"
+                            contentDescription = "Home",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
-                        Text(text = "Home")
+                        Text(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
+                            text = "Home",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth(0.9f),
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
+                            .fillMaxWidth(0.9f),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.SEARCHSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.SEARCHSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(R.drawable.search_24px),
-                            contentDescription = "Search Screen"
+                            contentDescription = "Search Screen",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.CATEGORYSCREEN.name
-                                ) { popUpTo(0) }
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.CATEGORYSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(id = R.drawable.restaurant_menu_24px),
-                            contentDescription = "Category"
+                            contentDescription = "Category",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Icon(
-                            modifier = Modifier.clickable {
-                                navHostController.navigate(
-                                    RecipeScreens.TODAYSCREEN.name
-                                )
-                            },
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .clickable {
+                                    navHostController.navigate(
+                                        RecipeScreens.TODAYSCREEN.name
+                                    ) { popUpTo(0) }
+                                },
                             painter = painterResource(id = R.drawable.calendar_today_24px),
-                            contentDescription = "Today's Dish"
+                            contentDescription = "Today's Dish",
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
@@ -110,8 +133,9 @@ fun SearchScreen(viewModel: RecipeViewModel, navHostController: NavHostControlle
     ) { paddingValues ->
         Column(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize()
-                .padding(5.dp),
+                .padding(top = 18.dp, bottom = 5.dp, start = 5.dp, end = 5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
